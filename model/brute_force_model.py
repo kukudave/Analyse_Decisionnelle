@@ -1,7 +1,7 @@
 import csv
 import itertools
 
-class InvestmentModel:
+class BruteForceModel:
     def __init__(self, budget_max=500000):
         self.budget_max = budget_max
         self.actions = []
@@ -72,7 +72,7 @@ class InvestmentModel:
       # Filtrer les actions trop coûteuses
       max_cost = max(cost for _, cost, _ in actions)
       if max_cost > budget:
-        print(f"⚠️ Certaines actions dépassent le budget ({max_cost} > {budget}), elles seront ignorées.")
+        print(f" Certaines actions dépassent le budget ({max_cost} > {budget}), elles seront ignorées.")
         actions = [a for a in actions if a[1] <= budget]
 
       n = len(actions)

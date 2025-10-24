@@ -1,33 +1,53 @@
 import os
-from model.investment_model import InvestmentModel
+import time
+from model.brute_force_model import BruteForceModel
+from model.dp_model import DPModel
 from view.investment_view import InvestmentView
 
 class InvestmentController:
-    def __init__(self, file_paths):
-        """
-        file_paths : liste des fichiers CSV à traiter
-        """
-        self.file_paths = file_paths
-        self.model = InvestmentModel()
+    def __init__(self):
         self.view = InvestmentView()
 
-    def run(self):
-        for file_path in self.file_paths:
-            # Vérification que le fichier existe
+    def run_force_brute(self):
+        """Exécuter la force brute uniquement sur data_test.csv"""
+        file_path = input("Entrez le chemin du fichier CSV (ex: data_test.csv) : ").strip()
+
+        if not os.path.isfile(file_path):
+            self.view.display_message(f"❌ Erreur : le fichier '{file_path}' est introuvable.")
+            return
+
+        self.view.display_message(f"\n=== TRAITEMENT DU FICHIER {file_path} (Force Brute) ===")
+        model = BruteForceModel()
+        model.load_actions_from_csv(file_path)
+
+        start_time = time.time()
+        actions, total_cost, total_profit = model.brute_force_selection()
+        end_time = time.time()
+
+        self.view.display_message("===== SOLUTION PAR FORCE BRUTE =====")
+        self.view.display_results(actions, total_cost, total_profit)
+        self.view.display_message(f"\n⏱ Temps d'exécution (Force Brute) : {end_time - start_time:.4f} secondes\n")
+
+    def run_dp(self):
+        """Exécuter la programmation dynamique sur plusieurs fichiers"""
+        file_input = input(
+            "Entrez les fichiers CSV à traiter (ex: data_test.csv dataset1_Python+P3.csv dataset2_Python+P3.csv) : "
+        ).strip()
+        file_paths = file_input.split()
+
+        for file_path in file_paths:
             if not os.path.isfile(file_path):
-                self.view.display_message(f"Erreur : le fichier '{file_path}' est introuvable.")
+                self.view.display_message(f"❌ Erreur : le fichier '{file_path}' est introuvable.")
                 continue
 
-            self.view.display_message(f"\n=== Traitement du fichier {file_path} ===")
-            self.model.load_actions_from_csv(file_path)
+            self.view.display_message(f"\n=== TRAITEMENT DU FICHIER {file_path} (Programmation Dynamique) ===")
+            model = DPModel()
+            model.load_actions_from_csv(file_path)
 
-            # Algorithme Force Brute uniquement pour data_test.csv
-            if 'data_test.csv' in file_path:
-                brute_actions, brute_cost, brute_profit = self.model.brute_force_selection()
-                self.view.display_message("===== SOLUTION PAR FORCE BRUTE =====")
-                self.view.display_results(brute_actions, brute_cost, brute_profit)
+            start_time = time.time()
+            actions, total_cost, total_profit = model.dynamic_programming_selection()
+            end_time = time.time()
 
-            # Algorithme Programmation Dynamique pour tous les fichiers
-            dp_actions, dp_cost, dp_profit = self.model.dynamic_programming_selection()
             self.view.display_message("===== SOLUTION PAR PROGRAMMATION DYNAMIQUE =====")
-            self.view.display_results(dp_actions, dp_cost, dp_profit)
+            self.view.display_results(actions, total_cost, total_profit)
+            self.view.display_message(f"\n⏱ Temps d'exécution (DP) : {end_time - start_time:.4f} secondes\n")
