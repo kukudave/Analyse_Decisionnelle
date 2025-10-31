@@ -13,7 +13,7 @@ class InvestmentController:
         file_path = input("Entrez le chemin du fichier CSV (ex: data_test.csv) : ").strip()
 
         if not os.path.isfile(file_path):
-            self.view.display_message(f"❌ Erreur : le fichier '{file_path}' est introuvable.")
+            self.view.display_message(f" Erreur : le fichier '{file_path}' est introuvable.")
             return
 
         self.view.display_message(f"\n=== TRAITEMENT DU FICHIER {file_path} (Force Brute) ===")
@@ -26,7 +26,7 @@ class InvestmentController:
 
         self.view.display_message("===== SOLUTION PAR FORCE BRUTE =====")
         self.view.display_results(actions, total_cost, total_profit)
-        self.view.display_message(f"\n⏱ Temps d'exécution (Force Brute) : {end_time - start_time:.4f} secondes\n")
+        self.view.display_message(f"\n Temps d'exécution (Force Brute) : {end_time - start_time:.4f} secondes\n")
 
     def run_dp(self):
         """Exécuter la programmation dynamique sur plusieurs fichiers"""
@@ -37,7 +37,7 @@ class InvestmentController:
 
         for file_path in file_paths:
             if not os.path.isfile(file_path):
-                self.view.display_message(f"❌ Erreur : le fichier '{file_path}' est introuvable.")
+                self.view.display_message(f" Erreur : le fichier '{file_path}' est introuvable.")
                 continue
 
             self.view.display_message(f"\n=== TRAITEMENT DU FICHIER {file_path} (Programmation Dynamique) ===")
@@ -50,4 +50,4 @@ class InvestmentController:
 
             self.view.display_message("===== SOLUTION PAR PROGRAMMATION DYNAMIQUE =====")
             self.view.display_results(actions, total_cost, total_profit)
-            self.view.display_message(f"\n⏱ Temps d'exécution (DP) : {end_time - start_time:.4f} secondes\n")
+            self.view.display_message(f"\n Temps d'exécution (DP) : {end_time - start_time:.4f} secondes\n")

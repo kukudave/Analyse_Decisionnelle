@@ -13,12 +13,12 @@ class DPModel:
             fieldnames = [f.strip().lower() for f in reader.fieldnames]
 
             for row in reader:
-                # Colonnes anglaises
+
                 if 'name' in fieldnames and 'price' in fieldnames and 'profit_pct' in fieldnames:
                     name = row['name']
                     cost = float(row['price'])
                     profit_pct = float(row['profit_pct'])
-                # Colonnes françaises
+                
                 elif 'actions' in fieldnames and 'cout par action (en euros)' in fieldnames and 'bénéfice après 2 ans' in fieldnames:
                     name = row['Actions']
                     cost = float(row[' Cout par action (en euros)'])
